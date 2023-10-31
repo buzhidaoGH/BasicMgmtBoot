@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <title>菜单树结构</title>
+  <th:block th:include="~{common/fragment::common_head}" />
+  <link rel="stylesheet" th:href="@{/pages/page.css}">
+</head>
+<body>
+  <label>
+    菜单名称：
+    <input type="text" name="menuId" style="outline: none;border: none">
+  </label>
+  <div id="menu_tree"></div>
+</body>
+<th:block th:include="~{common/fragment::common_script}" />
+<script type="text/javascript">
+  layui.use(['jquery', 'tree'], function () {
+    const $ = layui.jquery
+        , tree = layui.tree
+        , $input = $('input[name="menuId"]')
+        , menuId = layui.router().search['id']
+    $.ajax({url: ctxUrl + '/sys_menu/menu_list', method: 'post'})
+        .done(function (res) {
+          res.data.unshift({menuId: 0, menuName: "无", menuType: "M", children: []})
+          tree.render({
+            elem: '#menu_tree',
+            data: filterTree(dealTreeData(res.data)),
+            onlyIconControl: true,
+            click: function (obj) {
+              $input.attr("value", obj.data['menuName'])
+              $input.attr("data-value", obj.data['menuId'])
+            }
+          })
+          function dealTreeData(treeData) {
+            return treeData.map((item) => ({
+              ...item,
+              // 新增title字段
+              title: item['menuName'],
+              // 覆盖children字段
+              children: (item.children && item.children.length)
+                  ? dealTreeData(item.children) : null
+            }))
+          }
+          function filterTree(data) {
+            let newTree = data.filter(item => item['menuId'] + '' !== menuId && item['menuType'] === 'M')
+            newTree.forEach(x => x.children && (x.children = filterTree(x.children)))
+            return newTree
+          }
+        })
+  })
+</script>
+</html>

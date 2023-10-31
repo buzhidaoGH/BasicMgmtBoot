@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <title>角色管理</title>
+  <th:block th:include="~{common/fragment::common_head}" />
+  <link rel="stylesheet" th:href="@{/pages/page.css}">
+  <style type="text/less">
+    .layui-fluid {
+      -webkit-user-select: none; /*webkit浏览器*/
+      -moz-user-select: none; /*火狐*/
+      -ms-user-select: none; /*IE10*/
+      user-select: none;
+      .layui-table-fixed-l {box-shadow: none;}
+    }
+  </style>
+</head>
+<body>
+  <div class="layui-fluid base-fluid">
+    <table id="roleTable" lay-filter="roleTable"></table>
+  </div>
+</body>
+<th:block th:include="~{common/fragment::common_script}" />
+<script th:src="@{/pages/system/role/role.js}" type="text/javascript"></script>
+</html>

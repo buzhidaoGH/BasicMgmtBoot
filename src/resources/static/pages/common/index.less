@@ -1,0 +1,203 @@
+:root {
+  --main-top-bg-color: #222D32;
+  --main-top-color: #FFFFFF;
+  --main-side-bg-color: #222D32;
+  --main-side-color: #FFFFFF;
+  --main-side-select-color: #2FB9D4;
+}
+
+body {
+  &.theme-by1 {
+    --main-top-bg-color: #FFA4D1;
+    --main-top-color: #FFFFFF;
+    --main-side-bg-color: #161616;
+    --main-side-color: #FFFFFF;
+    --main-side-select-color: #737373;
+  }
+
+  &.theme-by2 {
+    --main-top-bg-color: #FFB800;
+    --main-top-color: #565656;
+    --main-side-bg-color: #28333E;
+    --main-side-color: #FFFFFF;
+    --main-side-select-color: #1E9FFF;
+  }
+
+  &.theme-by3 {
+    --main-top-bg-color: #1AA094;
+    --main-top-color: #FFFFFF;
+    --main-side-bg-color: #0C0C0C;
+    --main-side-color: #FFFFFF;
+    --main-side-select-color: #1AA094;
+  }
+
+  .required:before {content: '* ';color: red;}
+
+  .layui-layout-admin {
+    user-select: none;
+
+    .layui-header {
+      background-color: var(--main-top-bg-color);
+
+      .layui-logo {
+        box-shadow: none;
+        color: var(--main-side-color);
+        background-color: var(--main-side-bg-color);
+        user-select: none;
+        cursor: default;
+      }
+
+      .menu {
+        position: absolute;
+        left: 200px;
+        top: 8px;
+        width: 44px;
+        height: 44px;
+        line-height: 44px;
+        text-align: center;
+        color: var(--main-top-color);
+        font-size: 22px;
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, 0.1);
+        transition: 0.4s;
+        border-radius: 5px;
+
+        &.narrow {
+          transform: rotate(90deg);
+        }
+      }
+
+      .layui-nav > .layui-nav-item > a { color: var(--main-top-color)}
+    }
+
+    .layui-side {
+      background-color: var(--main-side-bg-color);
+      transition: 0.2s;
+
+      .layui-side-scroll {
+        // 用户头像容器
+        .user-avatar {
+          height: 130px; width: 200px;
+          border-bottom: 2px solid #393D49;
+
+          .user-img {
+            display: block;width: 80px;height: 80px;
+            margin: 10px auto 10px;
+            border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;
+            border: 4px solid #44576B;box-sizing: border-box;
+          }
+
+          .welcome {
+            display: block;width: 100%;height: 25px;
+            color: #FFFFFF;text-align: center;font-size: 12px;
+            white-space: nowrap;line-height: 25px;overflow: hidden;
+          }
+        }
+
+        .layui-nav {
+          background-color: transparent;
+
+          .layui-nav-item {
+            &.layui-nav-itemed > a {
+              background-color: rgba(255, 255, 255, .1);
+            }
+
+            dl.layui-nav-child {
+              padding-left: 10px;
+              //text-indent: 1em;
+            }
+
+            a {
+              color: var(--main-side-color);
+            }
+          }
+        }
+
+        .layui-this {
+          &, a, a:hover {
+            background-color: var(--main-side-select-color);
+          }
+        }
+      }
+    }
+
+    .layui-body {
+      transition: 0.2s;
+
+      &.layui-tab {
+        margin: 0;
+      }
+
+      .layui-tab-title {
+        background-color: #F2F2F2;
+        border-bottom: 1px solid #E2E2E2;
+
+        li {
+          padding-left: 10px;
+          padding-right: 10px;
+          font-size: 14px;
+
+          i {
+            color: #D3D3D3;
+
+            &:first-of-type {
+              margin-right: 5px;
+            }
+          }
+
+          &:first-of-type .layui-tab-close {
+            display: none;
+          }
+        }
+
+        .layui-this {
+          background-color: #FFF;
+
+          i {color: var(--main-top-bg-color)}
+        }
+      }
+
+      .layui-tab-content {
+        padding: 0;
+        height: calc(100% - 41px);
+
+        .layui-tab-item { height: 100%;}
+      }
+
+      .defined-tab-control {
+        position: absolute;
+        padding: 5px 0;
+        left: 0;top: 48px;
+        display: none;
+        background-color: #FFF;
+        border: 1px solid #D2D2D2;
+        border-radius: 2px;
+        width: 95px;
+
+        dd {
+          padding: 0 10px;
+          text-align: center;
+          height: 34px;
+          line-height: 34px;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #F2F2F2;
+          }
+
+          .fa {color: var(--main-top-bg-color);}
+        }
+      }
+
+      .defined-tab-shade {
+        position: absolute;left: 0;top: 41px;
+        width: 100%;height: calc(100% - 41px);
+        display: none;
+      }
+    }
+
+    .layui-footer {
+      transition: 0.2s;
+    }
+  }
+}

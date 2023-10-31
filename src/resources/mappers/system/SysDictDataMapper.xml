@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pvt.example.project.system.dictdata.dao.SysDictDataDao">
+  <resultMap id="BaseResultMap" type="pvt.example.project.system.dictdata.domain.SysDictData">
+    <id property="dictId" column="dict_id" />
+    <collection property="children" column="dict_id" fetchType="eager" select="selectByParentKey" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    SELECT sys_dict_data.dict_id,
+           sys_dict_data.parent_id,
+           sys_dict_data.dict_sort,
+           sys_dict_data.dict_label,
+           sys_dict_data.dict_type,
+           sys_dict_data.dict_value,
+           sys_dict_data.del_flag,
+           sys_dict_data.icon,
+           sys_dict_data.create_by,
+           sys_dict_data.create_time,
+           sys_dict_data.remark
+  </sql>
+
+  <select id="selectByParentKey" resultMap="BaseResultMap">
+    <include refid="Base_Column_List" />
+    FROM sys_dict_data
+    WHERE parent_id= #{dict_id} AND del_flag='0'
+  </select>
+
+  <select id="getSysDictDataByType" resultType="pvt.example.project.system.dictdata.domain.SysDictData">
+    SELECT sys_dict_data.dict_id,
+           sys_dict_data.dict_label,
+           sys_dict_data.dict_value
+    FROM sys_dict_data
+    WHERE dict_type = #{param}
+      AND del_flag = '0' LIMIT 1
+  </select>
+
+  <select id="findAllRecursion" resultMap="BaseResultMap">
+    <include refid="Base_Column_List" />
+    FROM sys_dict_data
+    WHERE (parent_id IS NULL OR parent_id=0) AND del_flag='0'
+    <if test="parentType!=null and parentType!=''">AND dict_type= #{parentType}</if>
+  </select>
+
+  <select id="findSysDictByParent"
+          resultType="pvt.example.project.system.dictdata.domain.SysDictData">
+    SELECT sys_dict_data.dict_id,
+           sys_dict_data.dict_label,
+           sys_dict_data.dict_type
+    FROM sys_dict_data
+    WHERE (parent_id IS NULL OR parent_id = 0)
+      AND del_flag = '0'
+  </select>
+
+  <select id="findSysDictData" resultType="pvt.example.project.system.dictdata.domain.SysDictData">
+    <include refid="Base_Column_List" />
+    FROM sys_dict_data
+    WHERE (del_flag IS NULL OR del_flag='0')
+    <if test="dictId != null and dictId != ''">
+      AND sys_dict_data.dict_id = #{dictId}
+    </if>
+    <if test="dictType != null and dictType != ''">
+      AND sys_dict_data.dict_type = #{dictType}
+    </if>
+  </select>
+
+  <update id="updateSysDictData">
+    UPDATE sys_dict_data
+    SET
+    <trim suffixOverrides=",">
+      <if test="dictLabel!=null and dictLabel!=''">sys_dict_data.dict_label = #{dictLabel},</if>
+      <if test="dictType!=null and dictType!=''">sys_dict_data.dict_type = #{dictType},</if>
+      <if test="dictValue!=null and dictValue!=''">sys_dict_data.dict_value = #{dictValue},</if>
+      <if test="icon!=null and icon!=''">sys_dict_data.icon = #{icon},</if>
+      <if test="parentId!=null and parentId!=''">sys_dict_data.parent_id = #{parentId},</if>
+      <if test="remark!=null and remark!=''">sys_dict_data.remark = #{remark},</if>
+    </trim>
+    WHERE sys_dict_data.dict_id = #{dictId}
+  </update>
+
+  <insert id="addSysDictData" useGeneratedKeys="true" keyProperty="dictId" keyColumn="dict_id">
+    INSERT INTO sys_dict_data
+    <trim suffixOverrides="," prefix="(" suffix=")">
+      <if test="dictId!=null and dictId!=''">dict_id,</if>
+      <if test="parentId!=null and parentId!=''">parent_id,</if>
+      <if test="dictSort!=null and dictSort!=''">dict_sort,</if>
+      <if test="dictLabel!=null and dictLabel!=''">dict_label,</if>
+      <if test="dictType!=null and dictType!=''">dict_type,</if>
+      <if test="dictValue!=null and dictValue!=''">dict_value,</if>
+      <if test="icon!=null and icon!=''">icon,</if>
+      <if test="createBy!=null and createBy!=''">create_by,</if>
+      <if test="createTime!=null">create_time,</if>
+      <if test="remark!=null and remark!=''">remark,</if>
+    </trim>
+    VALUES
+    <trim suffixOverrides="," prefix="(" suffix=")">
+      <if test="dictId!=null and dictId!=''">#{dictId},</if>
+      <if test="parentId!=null and parentId!=''">#{parentId},</if>
+      <if test="dictSort!=null and dictSort!=''">#{dictSort},</if>
+      <if test="dictLabel!=null and dictLabel!=''">#{dictLabel},</if>
+      <if test="dictType!=null and dictType!=''">#{dictType},</if>
+      <if test="dictValue!=null and dictValue!=''">#{dictValue},</if>
+      <if test="icon!=null and icon!=''">#{icon},</if>
+      <if test="createBy!=null and createBy!=''">#{createBy},</if>
+      <if test="createTime!=null">#{createTime},</if>
+      <if test="remark!=null and remark!=''">#{remark},</if>
+    </trim>
+  </insert>
+
+  <update id="deleteSysDictDataById">
+    UPDATE sys_dict_data SET sys_dict_data.del_flag='1'
+    WHERE sys_dict_data.del_flag!='1' AND sys_dict_data.dict_id IN
+    <foreach collection="dictIdList" open="(" close=")" separator="," item="id">
+      #{id}
+    </foreach>
+  </update>
+
+</mapper>

@@ -1,0 +1,40 @@
+server:
+  port: 80 #默认端口号
+  tomcat:
+    uri-encoding: UTF-8 #服务器默认编码
+  compression:
+    enabled: true # 静态资源压缩开启GZIP
+spring:
+  main:
+    banner-mode: console #banner是否显示
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/basic_mgmt?serverTimezone=UTC&useSSL=false #mysql5.6后必用useSSL参数
+  thymeleaf:
+    cache: false
+    check-template-location: false #无template不显示warn
+  web:
+    resources:
+      static-locations: classpath:static/
+  jackson:
+    default-property-inclusion: non_null #响应json数据时自动忽略null字段
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+#  mvc:
+#    hiddenmethod:
+#      filter:
+#        enabled: true # 是否支持除了get和post之外的请求;也就是将method变为参数接收,方便使用put等方法
+mybatis:
+  mapper-locations: classpath:mappers/**/*.xml # MyBatis 映射器文件的位置
+  type-aliases-package: pvt.example.project # 支持别名的包
+  configuration:
+    map-underscore-to-camel-case: true # 驼峰自动转换
+logging:
+  config: classpath:config/logback.xml # logback日志文件地址
+
+myapp:
+  name: @project.name@
+  version: @project.version@
+  desc: @project.description@
+  upload: 'upload'

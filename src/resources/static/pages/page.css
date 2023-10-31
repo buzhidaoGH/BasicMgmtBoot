@@ -1,0 +1,80 @@
+:root::-webkit-scrollbar {
+  width: 0.4em;
+}
+:root::-webkit-scrollbar-thumb {
+  background: #C1C1C1;
+  border-radius: 5px;
+}
+:root::-webkit-scrollbar-thumb:hover {
+  background: #9C9DA0;
+}
+body {
+  margin: 15px 15px 15px 15px;
+  background: #F2F2F2;
+}
+body .layui-table tbody tr:hover,
+body .layui-table-hover {
+  background-color: #F2F2F2 !important;
+}
+body .layui-table-fixed-l {
+  box-shadow: none !important;
+}
+body .self-class .layui-layer-title {
+  background: #E4E4E4;
+  color: #565656;
+  border: none;
+  font-weight: 700;
+}
+body .self-class .layui-layer-btn {
+  border-top: 1px solid #E9E7E7;
+}
+body .self-class2 .layui-layer-title {
+  border-radius: 25% 25% 0 0;
+}
+body .self-class2 .layui-layer-btn {
+  border-radius: 0 0 25% 25%;
+}
+body .layui-fluid.base-fluid {
+  border: 1px solid #F2F2F2;
+  margin: 0;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #FFFFFF;
+  height: calc(100vh - 52px);
+}
+body .toggle-switch {
+  --switch-left: 5%;
+  --switch-backcolor: #F2F2F2;
+  display: flex;
+  width: 60px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+}
+body .toggle-switch.open {
+  --switch-left: 50%;
+  --switch-backcolor: #23C6C8;
+}
+body .toggle-switch .switch {
+  display: block;
+  position: relative;
+  height: 0;
+  width: 100%;
+  padding: 25% 0;
+  border-radius: 25px;
+  background-color: var(--switch-backcolor);
+  transition: all 0.3s ease;
+}
+body .toggle-switch .switch::before {
+  content: '';
+  position: absolute;
+  width: 40%;
+  height: 80%;
+  border-radius: 50%;
+  top: 50%;
+  left: var(--switch-left);
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+  background-color: #FFFFFF;
+}

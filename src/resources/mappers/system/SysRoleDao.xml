@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pvt.example.project.system.role.dao.SysRoleDao">
+  <resultMap id="BaseResultMap" type="pvt.example.project.system.role.domain.SysRole">
+    <id column="role_id" property="roleId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    SELECT sys_role.role_id,
+           sys_role.role_name,
+           sys_role.role_key,
+           sys_role.data_scope,
+           sys_role.`status`,
+           sys_role.del_flag,
+           sys_role.create_by,
+           sys_role.create_time,
+           sys_role.update_by,
+           sys_role.update_time,
+           sys_role.remark
+  </sql>
+
+  <select id="selectRoleList" resultMap="BaseResultMap"
+          parameterType="pvt.example.project.system.role.domain.SysRole">
+    <include refid="Base_Column_List" />
+    FROM sys_role
+    WHERE sys_role.del_flag= '0'
+    <if test="roleId != null and roleId != ''">
+      AND sys_role.role_id= #{roleId}
+    </if>
+    <if test="roleName != null and roleName != ''">
+      AND sys_role.role_name = #{roleName}
+    </if>
+    <if test="roleKey != null and roleKey != ''">
+      AND sys_user.role_key = #{roleKey}
+    </if>
+    <if test="status != null and status != ''">
+      AND sys_user.status = #{status}
+    </if>
+  </select>
+</mapper>

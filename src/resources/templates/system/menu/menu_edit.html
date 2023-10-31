@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <title>菜单编辑</title>
+  <th:block th:include="~{common/fragment::common_head}" />
+  <link rel="stylesheet" th:href="@{/pages/page.css}">
+  <style type="text/less">
+    .base-fluid {
+      .form-group {
+        margin-top: 15px;
+        height: 30px;
+
+        .label_right {
+          float: left;display: block;
+          padding: 9px 15px;font-weight: 400;
+          line-height: 20px;text-align: right;
+
+          &.required:before {content: '* ';color: red;}
+        }
+      }
+
+      .btn-group {
+        position: fixed; bottom: 0;
+        display: flex;
+        left: 50%;
+        transform: translate(-50%, 0);
+
+        & > div {
+          padding: 15px;
+        }
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="base-fluid layui-fluid">
+    <form class="layui-form layui-form-pane" lay-filter="menuEditForm">
+      <input type="hidden" name="menuId" lay-verify="required" disabled>
+      <div class="form-group">
+        <label class="layui-col-md3 label_right required">父级菜单：</label>
+        <div class="layui-col-md7">
+          <input type="text" class="layui-input" name="parentId" onfocus="this.blur();"
+                 style="cursor: pointer">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="layui-col-md3 label_right required">菜单名称：</label>
+        <div class="layui-col-md7">
+          <input type="text" class="layui-input" lay-verify="required" name="menuName">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="layui-col-md3 label_right required">菜单排序：</label>
+        <div class="layui-col-md7">
+          <input type="text" class="layui-input" lay-verify="required" name="orderNum">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="layui-col-md3 label_right">菜单图标：</label>
+        <div class="layui-col-md7">
+          <input type="text" class="layui-input" onfocus="this.blur();" name="icon" style="cursor: pointer">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="layui-col-md3 label_right">菜单备注：</label>
+        <div class="layui-col-md7">
+          <input type="text" class="layui-input" name="remark">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="layui-col-md3 label_right required">菜单类型：</label>
+        <div class="layui-col-md7 menu-type-radio"></div>
+      </div>
+      <div class="radio-change"></div>
+      <div class="btn-group">
+        <div style="text-align: right">
+          <button class="layui-btn" lay-submit lay-filter="update-submit">
+            <i class="fa fa-refresh"></i> 更新
+          </button>
+        </div>
+        <div style="text-align: left">
+          <button class="layui-btn layui-btn-danger" id="dictReply">
+            <i class="fa fa-reply"></i> 取消
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</body>
+<th:block th:include="~{common/fragment::common_script}" />
+<script th:src="@{/pages/system/menu/menu_edit.js}" type="text/javascript"></script>
+</html>

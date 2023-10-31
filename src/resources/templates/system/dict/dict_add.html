@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <title>字典添加</title>
+  <th:block th:include="~{common/fragment::common_head}" />
+  <link rel="stylesheet" th:href="@{/pages/page.css}">
+  <style type="text/less">
+    .layui-fluid {
+      .label_right {
+        float: left;display: block;
+        padding: 9px 15px;font-weight: 400;
+        line-height: 20px;text-align: right;
+
+        &.required:before {content: '* ';color: red;}
+      }
+
+      .layui-row {margin-top: 15px;}
+
+      .btn-group {
+        position: fixed; bottom: 0;
+        display: flex;
+        left: 50%;
+        transform: translate(-50%, 0);
+
+        & > div {
+          padding: 15px;
+        }
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layui-fluid base-fluid">
+    <form class="layui-form layui-form-pane" lay-filter="dictAddForm">
+      <div class="layui-row">
+        <label class="layui-col-md3 label_right required">父级字典：</label>
+        <div class="layui-col-md7">
+          <select name="parentType"></select>
+        </div>
+      </div>
+      <div class="layui-row">
+        <label class="layui-col-md3 label_right required">字典名称：</label>
+        <div class="layui-col-md7">
+          <input type="text" class="layui-input" lay-verify="required" name="dictLabel">
+        </div>
+      </div>
+      <div class="layui-row">
+        <label class="layui-col-md3 label_right required">字典类型：</label>
+        <div class="layui-col-md7">
+          <input type="text" class="layui-input" lay-verify="required" name="dictType">
+        </div>
+      </div>
+      <div class="layui-row">
+        <label class="layui-col-md3 label_right required">字典排序：</label>
+        <div class="layui-col-md7">
+          <input type="text" class="layui-input" value="1" lay-verify="required" name="dictSort">
+        </div>
+      </div>
+      <div class="layui-row">
+        <label class="layui-col-md3 label_right">字典值：</label>
+        <div class="layui-col-md7">
+          <input type="text" class="layui-input" name="dictValue">
+        </div>
+      </div>
+      <div class="layui-row">
+        <label class="layui-col-md3 label_right">字典图标：</label>
+        <div class="layui-col-md7">
+          <input type="text" class="layui-input" name="icon" style="cursor: pointer">
+        </div>
+      </div>
+      <div class="layui-row">
+        <label class="layui-col-md3 label_right">字典备注：</label>
+        <div class="layui-col-md7">
+          <input type="text" class="layui-input" name="remark">
+        </div>
+      </div>
+      <div class="btn-group">
+        <div style="text-align: right">
+          <button class="layui-btn" lay-submit lay-filter="add-submit">
+            <i class="fa fa-refresh"></i> 增加
+          </button>
+        </div>
+        <div style="text-align: left">
+          <button class="layui-btn layui-btn-danger" id="dictReply">
+            <i class="fa fa-reply"></i> 取消
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</body>
+<th:block th:include="~{common/fragment::common_script}" />
+<script th:src="@{/pages/system/dict/dict_add.js}" type="text/javascript"></script>
+</html>

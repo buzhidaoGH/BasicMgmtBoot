@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://ch.qos.logback/xml/ns/logback"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback
+               https://raw.githubusercontent.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd"
+               debug="false">
+  <!-- 监听器，指定日志文件存放目录 -->
+  <contextListener class="pvt.example.common.config.LoggerStartupListenerConfig" />
+  <!-- 设置 logger context 名称,一旦设置不可改变，默认为default -->
+  <contextName>BaseMgmtLog</contextName>
+  <!-- 配置属性[文件默认是file,非resource] -->
+  <property name="logDir" value="mgmt-log" />
+
+  <!-- 配置一个通用的格式(当然可以直接写,但是麻烦撒~) -->
+  <property name="myPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} [%-5p][%5t] %c %m%n" />
+  <property name="myPattern2" value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] [%t] %logger{35}:%M{10} %m%n" />
+  <property name="colorPattern"
+            value="%blue(%date{yyyy-MM-dd HH:mm:ss}) [%highlight(%-5level)] %red([%thread]) %boldMagenta(%logger{50}) %boldCyan(%msg%n)" />
+  <property name="colorPattern2"
+            value="%yellow(%d{yyyy-MM-dd HH:mm:ss}) %highlight(%-5p) %magenta([%t]) %boldCyan(%logger{35}):%green(%M{10}) %highlight(%m%n)" />
+
+  <!-- 控制台标准输出样式定义 -->
+  <appender name="myConsole" class="ch.qos.logback.core.ConsoleAppender">
+    <target>System.out</target>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${colorPattern2}</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+  <!-- 按照每天生成日志文件模式 -->
+  <appender name="myFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!-- 当前活动日志文件名：用日期命名 -->
+    <!--<file>${logDir}/mgmt-log.log</file>-->
+    <!-- 文件滚动策略根据%d{patter}中的“patter”而定，此处为每天产生一个文件 -->
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- 归档文件名“.zip或.gz结尾”,表示归档文件自动压缩 -->
+      <fileNamePattern>${LOG_PATH}/mgmt-%d{yyyy-MM-dd}.log</fileNamePattern>
+      <!--日志文件保留天数-->
+      <maxHistory>7</maxHistory>
+    </rollingPolicy>
+    <!--日志文件最大的大小-->
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <maxFileSize>5MB</maxFileSize>
+    </triggeringPolicy>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${myPattern2}</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+  <logger name="pvt.example" level="info" additivity="false">
+    <!-- 和root一样,可以额外设置多个 日志输出控制器 -->
+    <appender-ref ref="myConsole" />
+    <appender-ref ref="myFile" />
+  </logger>
+  <!-- root 是配置 RootLogger 的级别和配置导入 日志输出控制器(appender) -->
+  <root level="warn">
+    <appender-ref ref="myConsole" />
+    <appender-ref ref="myFile" />
+  </root>
+
+</configuration>

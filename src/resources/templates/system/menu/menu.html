@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <title>菜单管理</title>
+  <th:block th:include="~{common/fragment::common_head}" />
+  <link rel="stylesheet" th:href="@{/pages/page.css}">
+  <link rel="stylesheet" th:href="@{/assets/lib/tree_table/tree_table.min.css}">
+</head>
+<body>
+  <div class="layui-fluid base-fluid">
+    <fieldset class="layui-elem-field">
+      <legend>搜索参数</legend>
+      <div class="layui-field-box">
+        <form class="layui-form layui-form-pane">
+          <div class="layui-col-md3">
+            <div class="layui-form-item" style="margin-bottom: 0;">
+              <label class="layui-form-label">菜单名称</label>
+              <div class="layui-input-block">
+                <input name="menuName" class="layui-input" />
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="layui-col-md1">
+          <div class="layui-form-item">
+            <button class="layui-btn"><i class="layui-icon layui-icon-search" style="font-size: 26px;"></i>搜索
+            </button>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <div class="layui-btn-group">
+      <button class="layui-btn layui-btn-sm" id="rootMenuAdd"><i class="fa fa-plus"></i> 根菜单新增</button>
+      <button class="layui-btn layui-btn-sm layui-btn-normal" id="expandAndCollapse"><i
+          class="fa fa-exchange"></i> 展开/折叠
+      </button>
+    </div>
+    <table class="layui-hide" id="treeTableMenu" lay-filter="treeTableMenu"></table>
+  </div>
+</body>
+<th:block th:include="~{common/fragment::common_script}" />
+<script th:src="@{/pages/system/menu/menu.js}" type="text/javascript"></script>
+</html>

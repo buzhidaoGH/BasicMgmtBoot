@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pvt.example.project.system.menu.dao.SysMenuDao">
+  <resultMap id="BaseResultMap" type="pvt.example.project.system.menu.domain.SysMenu">
+    <id column="menu_id" property="menuId" />
+    <association property="parentName" column="{parentId=parent_id}" select="selectParentById" />
+    <collection property="children" column="{menuId=menu_id}" fetchType="eager" select="selectByParentKey" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="pvt.example.project.system.menu.domain.SysMenu">
+    <id column="menu_id" property="menuId" />
+    <association property="parentName" column="{parentId=parent_id}" select="selectParentById" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    SELECT sys_menu.menu_id,
+           sys_menu.menu_name,
+           sys_menu.parent_id,
+           sys_menu.order_num,
+           sys_menu.`path`,
+           sys_menu.is_frame,
+           sys_menu.menu_type,
+           sys_menu.visible,
+           sys_menu.perms,
+           sys_menu.icon,
+           sys_menu.remark
+  </sql>
+
+  <select id="selectParentById" resultType="string">
+    SELECT IFNULL(MIN(sys_menu.menu_name), '无') AS parent_name FROM sys_menu WHERE menu_id = #{parentId}
+  </select>
+
+  <select id="selectByParentKey" resultMap="BaseResultMap">
+    <include refid="Base_Column_List" />
+    FROM sys_menu
+    WHERE parent_id= #{menuId}
+  </select>
+
+  <select id="findAllRecursion" resultMap="BaseResultMap">
+    <include refid="Base_Column_List" />
+    FROM sys_menu
+    WHERE (parent_id IS NULL OR parent_id=0)
+  </select>
+
+  <select id="findMenuById" resultMap="BaseResultMap2">
+    <include refid="Base_Column_List" />
+    FROM sys_menu
+    WHERE menu_id = #{menuId}
+  </select>
+
+  <delete id="deleteSysMenuById">
+    DELETE FROM sys_menu
+    WHERE menu_id IN
+    <foreach collection="menuIdList" open="(" separator="," close=")" item="menuId">
+      #{menuId}
+    </foreach>
+  </delete>
+
+  <update id="updateSysMenu">
+    UPDATE sys_menu SET
+    <trim suffixOverrides=",">
+      <if test="menuName!=null and menuName!=''">sys_menu.menu_name = #{menuName},</if>
+      <if test="parentId!=null and parentId!='' or parentId==0">sys_menu.parent_id = #{parentId},</if>
+      <if test="orderNum!=null and orderNum!=''">sys_menu.order_num = #{orderNum},</if>
+      <if test="path!=null and path!=''">sys_menu.`path` = #{path},</if>
+      <if test="isFrame!=null and isFrame!=''">sys_menu.is_frame = #{isFrame},</if>
+      <if test="menuType!=null and menuType!=''">sys_menu.menu_type = #{menuType},</if>
+      <if test="visible!=null and visible!=''">sys_menu.visible = #{visible},</if>
+      <if test="icon!=null and icon!=''">sys_menu.icon = #{icon},</if>
+      <if test="remark!=null and remark!=''">sys_menu.remark = #{remark},</if>
+      <if test="updateBy!=null and updateBy!=''">sys_menu.update_by = #{updateBy},</if>
+      <if test="updateTime!=null">sys_menu.update_time=#{updateTime},</if>
+    </trim>
+    WHERE sys_menu.menu_id = #{menuId}
+  </update>
+
+  <insert id="insertSysMenu" useGeneratedKeys="true" keyProperty="menuId" keyColumn="menu_id">
+    INSERT INTO sys_menu
+    <trim suffixOverrides="," prefix="(" suffix=")">
+      <if test="menuName!=null and menuName!=''">menu_name,</if>
+      <if test="parentId!=null and parentId!=''">parent_id,</if>
+      <if test="orderNum!=null and orderNum!=''">order_num,</if>
+      <if test="path!=null and path!=''">`path`,</if>
+      <if test="isFrame!=null and isFrame!=''">is_frame,</if>
+      <if test="menuType!=null and menuType!=''">menu_type,</if>
+      <if test="visible!=null and visible!=''">visible,</if>
+      <if test="icon!=null and icon!=''">icon,</if>
+      <if test="remark!=null and remark!=''">remark,</if>
+      <if test="createBy!=null and createBy!=''">create_by,</if>
+      <if test="createTime!=null">create_time,</if>
+      <if test="updateBy!=null and updateBy!=''">update_by,</if>
+      <if test="updateTime!=null">update_time,</if>
+    </trim>
+    VALUES
+    <trim suffixOverrides="," prefix="(" suffix=")">
+      <if test="menuName!=null and menuName!=''">#{menuName},</if>
+      <if test="parentId!=null and parentId!=''">#{parentId},</if>
+      <if test="orderNum!=null and orderNum!=''">#{orderNum},</if>
+      <if test="path!=null and path!=''">#{path},</if>
+      <if test="isFrame!=null and isFrame!=''">#{isFrame},</if>
+      <if test="menuType!=null and menuType!=''">#{menuType},</if>
+      <if test="visible!=null and visible!=''">#{visible},</if>
+      <if test="icon!=null and icon!=''">#{icon},</if>
+      <if test="remark!=null and remark!=''">#{remark},</if>
+      <if test="createBy!=null and createBy!=''">#{createBy},</if>
+      <if test="createTime!=null">#{createTime},</if>
+      <if test="updateBy!=null and updateBy!=''">#{updateBy},</if>
+      <if test="updateTime!=null">#{updateTime},</if>
+    </trim>
+  </insert>
+
+</mapper>

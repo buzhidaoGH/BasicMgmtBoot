@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pvt.example.project.system.user.dao.SysUserDao">
+  <resultMap id="BaseResultMap" type="pvt.example.project.system.user.domain.SysUser">
+    <id property="userId" column="user_id"></id>
+    <association property="sysRole" column="user_id" fetchType="eager"
+                 select="selectRoleByUserId"></association>
+  </resultMap>
+
+  <sql id="Base_Column">
+    SELECT sys_user.user_id,
+           sys_user.user_name,
+           sys_user.nick_name,
+           sys_user.email,
+           sys_user.phone,
+           sys_user.gender,
+           sys_user.avatar,
+           sys_user.status,
+           sys_user.login_ip,
+           sys_user.login_date,
+           sys_user.create_by,
+           sys_user.create_time,
+           sys_user.update_by,
+           sys_user.update_time,
+           sys_user.del_flag,
+           sys_user.remark
+  </sql>
+
+  <insert id="insertSysUser" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
+    INSERT INTO sys_user
+    <trim suffixOverrides="," prefix="(" suffix=")">
+      <if test="userId!=null and userId!=''">user_id,</if>
+      <if test="userName!=null and userName!=''">user_name,</if>
+      <if test="nickName!=null and nickName!=''">nick_name,</if>
+      <if test="email!=null and email!=''">email,</if>
+      <if test="phone!=null and phone!=''">phone,</if>
+      <if test="gender!=null and gender!=''">gender,</if>
+      <if test="avatar!=null and avatar!=''">avatar,</if>
+      <if test="password!=null and password!=''">`password`,</if>
+      <if test="status!=null and status!=''">`status`,</if>
+      <if test="delFlag!=null and delFlag!=''">del_flag,</if>
+      <if test="loginIp!=null and loginIp!=''">login_ip,</if>
+      <if test="loginDate!=null">login_date,</if>
+      <if test="createBy!=null and createBy!=''">create_by,</if>
+      <if test="createTime!=null">create_time,</if>
+      <if test="updateBy!=null and updateBy!=''">update_by,</if>
+      <if test="updateTime!=null">update_time,</if>
+      <if test="remark!=null and remark!=''">remark,</if>
+    </trim>
+    VALUES
+    <trim suffixOverrides="," prefix="(" suffix=")">
+      <if test="userId!=null and userId!=''">#{userId},</if>
+      <if test="userName!=null and userName!=''">#{userName},</if>
+      <if test="nickName!=null and nickName!=''">#{nickName},</if>
+      <if test="email!=null and email!=''">#{email},</if>
+      <if test="phone!=null and phone!=''">#{phone},</if>
+      <if test="gender!=null and gender!=''">#{gender},</if>
+      <if test="avatar!=null and avatar!=''">#{avatar},</if>
+      <if test="password!=null and password!=''">#{password},</if>
+      <if test="status!=null and status!=''">#{status},</if>
+      <if test="delFlag!=null and delFlag!=''">#{delFlag},</if>
+      <if test="loginIp!=null and loginIp!=''">#{loginIp},</if>
+      <if test="loginDate!=null">#{loginDate},</if>
+      <if test="createBy!=null and createBy!=''">#{createBy},</if>
+      <if test="createTime!=null">#{createTime},</if>
+      <if test="updateBy!=null and updateBy!=''">#{updateBy},</if>
+      <if test="updateTime!=null">#{updateTime},</if>
+      <if test="remark!=null and remark!=''">#{remark},</if>
+    </trim>
+  </insert>
+
+  <insert id="insertSysUserRole">
+    INSERT INTO sys_user_role(user_id, role_id) VALUES (#{userId}, #{roleId})
+  </insert>
+
+  <select id="selectRoleByUserId" resultType="pvt.example.project.system.role.domain.SysRole">
+    SELECT sys_role.role_id,
+           sys_role.role_name,
+           sys_role.role_key
+    FROM sys_role
+           INNER JOIN sys_user_role
+                      ON sys_role.role_id = sys_user_role.role_id
+    WHERE del_flag = '0'
+      AND sys_user_role.user_id = #{user_id}
+  </select>
+
+  <select id="getSysUser" parameterType="SysUser" resultMap="BaseResultMap">
+    <include refid="Base_Column" />
+    FROM sys_user
+    WHERE user_name = #{userName}
+    AND password = #{password} LIMIT 1
+  </select>
+
+  <select id="selectUserList" resultMap="BaseResultMap">
+    <include refid="Base_Column" />
+    FROM sys_user
+    WHERE sys_user.del_flag = '0'
+    <if test="userId != null and userId != ''">
+      AND sys_user.user_id = #{userId}
+    </if>
+    <if test="userName != null and userName != ''">
+      AND sys_user.user_name = #{userName}
+    </if>
+    <if test="nickName != null and nickName != ''">
+      AND sys_user.nick_name = #{nickName}
+    </if>
+    <if test="phone != null and phone != ''">
+      AND sys_user.phone = #{phone}
+    </if>
+    <if test="status != null and status != ''">
+      AND sys_user.status = #{status}
+    </if>
+  </select>
+
+  <update id="deleteSysUserById" parameterType="arraylist">
+    UPDATE sys_user SET sys_user.del_flag='1' WHERE sys_user.del_flag!='1' AND sys_user.user_id IN
+    <foreach collection="ids" open="(" close=")" separator="," item="id">
+      #{id}
+    </foreach>
+  </update>
+
+  <update id="uploadSysUserLoginById" parameterType="pvt.example.project.system.user.domain.SysUser">
+    UPDATE sys_user
+    SET sys_user.login_ip = #{loginIp},
+        sys_user.login_date = #{loginDate}
+    WHERE sys_user.user_id = #{userId};
+  </update>
+
+  <update id="updateUserStatusById" parameterType="pvt.example.project.system.user.domain.SysUser">
+    UPDATE sys_user
+    SET sys_user.status = #{status}
+    WHERE sys_user.user_id = #{userId}
+  </update>
+
+  <update id="updateSysUser" parameterType="pvt.example.project.system.user.domain.SysUser">
+    UPDATE sys_user
+    SET
+    <trim suffixOverrides=",">
+      <if test="nickName!=null and nickName!=''">sys_user.nick_name = #{nickName},</if>
+      <if test="email!=null and email!=''">sys_user.email = #{email},</if>
+      <if test="phone!=null and phone!=''">sys_user.phone = #{phone},</if>
+      <if test="gender!=null and gender!=''">sys_user.gender = #{gender},</if>
+      <if test="avatar!=null and avatar!=''">sys_user.avatar = #{avatar},</if>
+      <if test="updateBy!=null and updateBy!=''">sys_user.update_by = #{updateBy},</if>
+      <if test="updateTime!=null">sys_user.update_time = #{updateTime},</if>
+      <if test="remark!=null and remark!=''">sys_user.remark = #{remark},</if>
+    </trim>
+    WHERE sys_user.user_id = #{userId} AND sys_user.user_name = #{userName}
+  </update>
+
+  <update id="updateSysUserRole">
+    UPDATE sys_user_role
+    SET sys_user_role.role_id = #{roleId}
+    WHERE sys_user_role.user_id = #{userId}
+  </update>
+
+  <update id="changePasswordById">
+    UPDATE sys_user
+    SET sys_user.password = #{password}
+    WHERE sys_user.user_id = #{userId}
+  </update>
+
+</mapper>

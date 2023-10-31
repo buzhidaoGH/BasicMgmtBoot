@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <title>服务管理</title>
+  <th:block th:include="~{common/fragment::common_head}" />
+  <link rel="stylesheet" th:href="@{/pages/page.css}">
+  <style type="text/less">
+    .base-fluid {
+      background-color: #F2F2F2 !important;
+
+      .layui-card {
+        border: 1px solid #DDDDDD;
+        border-radius: 4px;
+
+        .layui-card-header { border-bottom-color: #DDDDDD;}
+
+        .layui-card-body {
+          padding: 0;
+
+          .layui-form {margin: 0;}
+
+          .layui-table {margin: 0;}
+        }
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="base-fluid layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md6">
+        <div class="layui-card">
+          <div class="layui-card-header"><i class="layui-icon layui-icon-chart-screen"></i> CPU|硬盘</div>
+          <div class="layui-card-body">
+            <table class="layui-table" id="cpuTable" lay-filter="cpuTable"></table>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-md6">
+        <div class="layui-card">
+          <div class="layui-card-header"><i class="fa fa-ticket"></i> 内存</div>
+          <div class="layui-card-body">
+            <table class="layui-table" id="ticketTable" lay-filter="ticketTable"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header"><i class="fa fa-windows"></i> 服务器信息</div>
+          <div class="layui-card-body">
+            <table class="layui-table" id="windowsTable" lay-filter="windowsTable" lay-skin="line">
+              <tr>
+                <td>服务器名称</td>
+                <td class="serverName"></td>
+                <td>操作系统</td>
+                <td class="systemName"></td>
+              </tr>
+              <tr>
+                <td>服务器IP</td>
+                <td class="serverIp"></td>
+                <td>系统架构</td>
+                <td class="systemArch"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header"><i class="fa fa-coffee"></i> Java虚拟机信息</div>
+          <div class="layui-card-body">
+            <table class="layui-table" id="coffeeTable" lay-filter="coffeeTable" lay-skin="line">
+              <tr>
+                <td style="width: 80px">Jvm名称</td>
+                <td class="jvmName"></td>
+                <td>Jvm版本</td>
+                <td class="jvmVersion"></td>
+              </tr>
+              <tr>
+                <td>启动时间</td>
+                <td class="jvmStartDate"></td>
+                <td>运行时间</td>
+                <td class="jvmStartTime"></td>
+              </tr>
+              <tr>
+                <td>安装路径</td>
+                <td class="jvmJrePath"></td>
+              </tr>
+              <tr>
+                <td>项目路径</td>
+                <td class="jvmProjectPath"></td>
+              </tr>
+              <tr>
+                <td>运行参数</td>
+                <td colspan="3" class="jvmArgs"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<th:block th:include="~{common/fragment::common_script}" />
+<script th:src="@{/pages/monitor/server/server.js}" type="text/javascript"></script>
+</html>
